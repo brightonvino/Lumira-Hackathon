@@ -10,3 +10,12 @@ html, body, #container, #map {
     height: 100%;
     width: 100%;
 }
+
+circle.crime {
+    opacity: 0.25;
+}
+
+circle.crime:hover {
+    cursor: pointer;
+    opacity: 1;
+}

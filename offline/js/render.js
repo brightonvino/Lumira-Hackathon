@@ -1,5 +1,5 @@
 var render = function (data, container) {
-	container.classed('theateam', true);
+    container.classed('theateam', true);
     var div = container.selectAll('#map');
     if (div[0].length === 0) {
         div = container.append('div').attr('id', 'map');
@@ -28,32 +28,27 @@ function renderMap(data, map) {
     var updateMap;
 
     var d3Overlay = L.d3SvgOverlay(function (selection, projection) {
-        
+
         updateMap = function () {
             var feature = selection.selectAll("circle")
                     .data(data);
-            
+
             feature.enter().append("circle")
-                    .style("opacity", .2)
-                    .style("fill", "red")
+                    .attr("class", "crime")
                     .attr("r", function (d) {
-                        return Math.log(d.MinOfucr) * 2 / Math.min(projection.layer._scale, 18);
+                        return (d.MinOfucr - 300) / 25 * Math.min(projection.layer._scale, 18);
                     })
                     .attr('cx', function (d) {
                         return projection.latLngToLayerPoint([parseFloat(d.y), parseFloat(d.x)]).x;
                     })
                     .attr('cy', function (d) {
                         return projection.latLngToLayerPoint([parseFloat(d.y), parseFloat(d.x)]).y;
-                    });
+                    })
+                    .attr("fill", "#d62728");
 
             feature.exit().remove();
-
-            feature.attr('stroke-width', 1 / projection.layer._scale)
-                    .attr("r", function (d) {
-                        return Math.log(d.MinOfucr) * 2 * 1 / Math.min(projection.layer._scale, 15);
-                    });
         };
-        
+
         updateMap();
     });
 
