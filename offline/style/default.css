@@ -21,21 +21,32 @@ html, body, #container, #map {
     opacity: 1;
 }
 
-div.tip {
-    padding: 10px;
+div.theateam-tip {
+    padding: 5px;
     display: block;
     color: #CCC;
     background-color: #333;
-    border: 1px solid #000;
+    border: 2px solid #000;
     font-size: 0.8em;
     line-height: 1.2em;
     font-family: sans-serif;
 }
 
-div.tip span {
+div.theateam-tip span {
     display: block;
-    margin-top: 5px;
-    font-size: 0.9em;
+}
+
+div.theateam-tip span.type {
+    margin-bottom: 8px;
+}
+
+div.theateam-tip span.time {
+    font-size: 0.8em;
+}
+
+div.theateam-tip span.location {
+    font-size: 0.8em;
+    color: #EEE;
 }
 
 #time-chart {

@@ -32,35 +32,37 @@ function renderMap(data, map, container) {
     var d3Overlay = L.d3SvgOverlay(function (selection, projection) {
 
         updateMap = function () {
+
             var data = monthDimension.top(Infinity);
             //if (data.length === migrantData.length) return;
 
-            console.log(data.length);
             data = data.filter(function (d) {
-                return !((d.x === "") || (d.y === ""));
+                return !((d.Lat === "") || (d.Long === ""));
             });
 
             var feature = selection.selectAll("circle")
                     .data(data);
 
+            console.log("Filtered: " + data.length);
+
             tip = d3.tip()
                     .offset([-10, 0])
                     .attr('class', 'd3-tip').html(function (d) {
-                return '<div class="tip">' + d["UC2 Literal"] + '<BR><span>Crime Level: ' + d.MinOfucr + '</span></div>';
+                return '<div class="theateam-tip"><span class="type"> ' + d.CrimeDetail + '</span><span class="location">Location: ' + d.Address + '</span><span class="time">Time: ' + d.Date + " "+ d.Time + '</span></div>';
             });
 
-            selection.call(tip)
+            selection.call(tip);
 
             feature.enter().append("circle")
                     .attr("class", "crime")
                     .attr("r", function (d) {
-                        return Math.log(d.MinOfucr) * 2 * 0.5 / Math.min(projection.layer._scale, 15);
+                        return Math.log(d.Rating) * 2 * 0.5 / Math.min(projection.layer._scale, 15);
                     })
                     .attr('cx', function (d) {
-                        return projection.latLngToLayerPoint([parseFloat(d.y), parseFloat(d.x)]).x;
+                        return projection.latLngToLayerPoint([parseFloat(d.Long), parseFloat(d.Lat)]).x;
                     })
                     .attr('cy', function (d) {
-                        return projection.latLngToLayerPoint([parseFloat(d.y), parseFloat(d.x)]).y;
+                        return projection.latLngToLayerPoint([parseFloat(d.Long), parseFloat(d.Lat)]).y;
                     })
                     .attr("fill", "#d62728")
                     .on('mouseover', tip.show)
@@ -69,9 +71,9 @@ function renderMap(data, map, container) {
             feature.exit().remove();
 
             feature
-                .attr("r", function(d) {
-                    return Math.log(d.MinOfucr) * 2 * 0.5 / Math.min(projection.layer._scale, 15);
-                });
+                    .attr("r", function (d) {
+                        return Math.log(d.Rating) * 2 * 0.5 / Math.min(projection.layer._scale, 15);
+                    });
 
         };
 
@@ -92,15 +94,15 @@ function renderMap(data, map, container) {
                 }
 
                 var dateDimension = cfData.dimension(function (d) {
-                    return new Date(d.occur_date)
+                    return new Date(d.Date);
                 });
 
                 window.monthDimension = cfData.dimension(function (d) {
-                    return new Date(d.occur_date);
+                    return new Date(d.Date);
                 });
 
                 var openGroup = monthDimension.group().reduceSum(function (d) {
-                    return parseInt(d.MinOfucr);
+                    return parseInt(d.Rating);
                 });
                 closeGroup = monthDimension.group().reduce(
                         function (p, v) {
@@ -142,6 +144,7 @@ function renderMap(data, map, container) {
 $(function () {
     var container = d3.select('#container');
     d3.json("./data/homepark.json", function (data) {
+        console.log(data.length, data);
         render(data, container);
     });
 });
