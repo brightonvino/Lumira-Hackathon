@@ -1,3 +1,12 @@
 /* IMPORTANT:  use unique CSS class name to avoid confliction with other extensions or applications. */
 
 /* For example, adding the extension id as prefix of CSS class name. */
+
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #container, #map {
+    height: 100%;
+    width: 100%;
+}
