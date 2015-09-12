@@ -20,12 +20,12 @@ var render = function (data, container) {
             accessToken: 'pk.eyJ1Ijoic2hvYmhpdGciLCJhIjoiNmI1Nzg0ZmIzMWY4OGU4MGEzYzI3ZGIxMzBhZmQ4NmUifQ.z5e8zocByNWRqW6VPfxpwg'
         }).addTo(map);
 
-        renderMap(data, map, container);
+        renderMap(data, map,    container);
     }
 
 };
 
-function renderMap(data, map, container) {
+function renderMap(originalData, map, container) {
     var updateMap;
     var init = false;
 
@@ -34,16 +34,17 @@ function renderMap(data, map, container) {
         updateMap = function () {
 
             var data = monthDimension.top(Infinity);
-            console.table(data);
-            //if (data.length === migrantData.length) return;
+            
+            if (data.length === originalData.length) return;
 
             data = data.filter(function (d) {
                 return !((d.Lat === "") || (d.Long === ""));
             });
 
             var feature = selection.selectAll("circle")
-                    .data(data);
+                    .data(data, function(d) { return d.ID; });
 
+console.table(data);
             console.log("Filtered: " + data.length);
 
             tip = d3.tip()
@@ -53,6 +54,7 @@ function renderMap(data, map, container) {
             });
 
             selection.call(tip);
+
 
             feature.enter().append("circle")
                     .attr("class", "crime")
@@ -74,6 +76,12 @@ function renderMap(data, map, container) {
             feature
                     .attr("r", function (d) {
                         return Math.log(d.Rating) * 2 * 0.5 / Math.min(projection.layer._scale, 15);
+                    })
+                    .attr('cx', function (d) {
+                        return projection.latLngToLayerPoint([parseFloat(d.Long), parseFloat(d.Lat)]).x;
+                    })
+                    .attr('cy', function (d) {
+                        return projection.latLngToLayerPoint([parseFloat(d.Long), parseFloat(d.Lat)]).y;
                     });
 
         };
@@ -81,7 +89,7 @@ function renderMap(data, map, container) {
         if (init === false) {
             init = true;
 
-            cfData = crossfilter(data);
+            cfData = crossfilter(originalData);
 
             var timeChartDiv = container.selectAll('#time-chart');
             if (timeChartDiv[0].length === 0) {
