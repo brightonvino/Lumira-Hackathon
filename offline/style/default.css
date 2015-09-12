@@ -12,14 +12,32 @@ html, body, #container, #map {
 }
 
 
-circle.crime {
+.theateam circle.crime {
     opacity: 0.25;
 }
 
-circle.crime:hover {
+.theateam circle.crime:hover {
     cursor: pointer;
     opacity: 1;
 }
+
+div.tip {
+    padding: 10px;
+    display: block;
+    color: #CCC;
+    background-color: #333;
+    border: 1px solid #000;
+    font-size: 0.8em;
+    line-height: 1.2em;
+    font-family: sans-serif;
+}
+
+div.tip span {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
 #time-chart {
     position: absolute;
     bottom: 0px;
@@ -27,5 +45,4 @@ circle.crime:hover {
     margin-left: -400px;
     background: #fafafa;
     opacity: 0.7;
-
 }
