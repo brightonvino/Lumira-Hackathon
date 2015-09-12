@@ -12,7 +12,6 @@ var render = function (data, container) {
         }
 
         var map = leaflet.map('map').setView([33.775, -84.40], 14);
-
         leaflet.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
             maxZoom: 20,
@@ -20,9 +19,8 @@ var render = function (data, container) {
             accessToken: 'pk.eyJ1Ijoic2hvYmhpdGciLCJhIjoiNmI1Nzg0ZmIzMWY4OGU4MGEzYzI3ZGIxMzBhZmQ4NmUifQ.z5e8zocByNWRqW6VPfxpwg'
         }).addTo(map);
 
-        renderMap(data, map,    container);
+        renderMap(data, map, container);
     }
-
 };
 
 function renderMap(originalData, map, container) {
@@ -32,29 +30,27 @@ function renderMap(originalData, map, container) {
     var d3Overlay = L.d3SvgOverlay(function (selection, projection) {
 
         updateMap = function () {
-
             var data = monthDimension.top(Infinity);
-            
-            if (data.length === originalData.length) return;
+            if (data.length === originalData.length)
+                return;
 
             data = data.filter(function (d) {
                 return !((d.Lat === "") || (d.Long === ""));
             });
 
             var feature = selection.selectAll("circle")
-                    .data(data, function(d) { return d.ID; });
+                    .data(data, function (d) {
+                        return d.ID;
+                    });
 
-console.table(data);
             console.log("Filtered: " + data.length);
 
             tip = d3.tip()
                     .offset([-10, 0])
                     .attr('class', 'd3-tip').html(function (d) {
-                return '<div class="theateam-tip"><span class="type"> ' + d.CrimeDetail + '</span><span class="location">Location: ' + d.Address + '</span><span class="time">Time: ' + d.Date + " "+ d.Time + '</span></div>';
+                return '<div class="theateam-tip"><span class="type"> ' + d.CrimeDetail + '</span><span class="location">Location: ' + d.Address + '</span><span class="time">Time: ' + d.Date + " " + d.Time + '</span></div>';
             });
-
             selection.call(tip);
-
 
             feature.enter().append("circle")
                     .attr("class", "crime")
@@ -73,17 +69,13 @@ console.table(data);
 
             feature.exit().remove();
 
-            feature
-                    .attr("r", function (d) {
-                        return Math.log(d.Rating) * 2 * 0.5 / Math.min(projection.layer._scale, 15);
-                    })
-                    .attr('cx', function (d) {
-                        return projection.latLngToLayerPoint([parseFloat(d.Long), parseFloat(d.Lat)]).x;
-                    })
-                    .attr('cy', function (d) {
-                        return projection.latLngToLayerPoint([parseFloat(d.Long), parseFloat(d.Lat)]).y;
-                    });
-
+            feature.attr("r", function (d) {
+                return Math.log(d.Rating) * 2 * 0.5 / Math.min(projection.layer._scale, 15);
+            }).attr('cx', function (d) {
+                return projection.latLngToLayerPoint([parseFloat(d.Long), parseFloat(d.Lat)]).x;
+            }).attr('cy', function (d) {
+                return projection.latLngToLayerPoint([parseFloat(d.Long), parseFloat(d.Lat)]).y;
+            });
         };
 
         if (init === false) {
@@ -104,13 +96,13 @@ console.table(data);
 
                 var dateDimension = cfData.dimension(function (d) {
                     var dateParts = d.Date.split('/');
-                    var dateObj = new Date(Number(dateParts[2])+2000,Number(dateParts[0])-1,Number(dateParts[1]));
+                    var dateObj = new Date(Number(dateParts[2]) + 2000, Number(dateParts[0]) - 1, Number(dateParts[1]));
                     return dateObj;
                 });
 
                 window.monthDimension = cfData.dimension(function (d) {
                     var dateParts = d.Date.split('/');
-                    var dateObj = new Date(Number(dateParts[2])+2000,Number(dateParts[0])-1,Number(dateParts[1]));
+                    var dateObj = new Date(Number(dateParts[2]) + 2000, Number(dateParts[0]) - 1, Number(dateParts[1]));
                     return dateObj;
                 });
 
@@ -118,25 +110,10 @@ console.table(data);
                     return 1;
                 });
 
-                // closeGroup = monthDimension.group().reduce(
-                //         function (p, v) {
-                //             p.push(v.close);
-                //             return p;
-                //         },
-                //         function (p, v) {
-                //             p.splice(p.indexOf(v.close), 1);
-                //             return p;
-                //         },
-                //         function () {
-                //             return [];
-                //         }
-                // );
-
                 var timeChart = dc.barChart('#time-chart');
-                timeChart
-                        .width(800)
+                timeChart.width(800)
                         .height(120)
-                        .margins({top: 10, right: 50, bottom: 30, left: 50})
+                        .margins({top: 20, right: 30, bottom: 25, left: 30})
                         .dimension(monthDimension)
                         .group(openGroup)
                         .x(d3.time.scale().domain([new Date("2009-01-01T00:00:00Z"), new Date("2015-09-15T00:00:00Z")]))
@@ -158,7 +135,6 @@ console.table(data);
 $(function () {
     var container = d3.select('#container');
     d3.json("./data/homepark.json", function (data) {
-        console.log(data.length, data);
         render(data, container);
     });
 });
