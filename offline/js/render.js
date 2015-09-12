@@ -95,13 +95,13 @@ function renderMap(data, map, container) {
                 }
 
                 var dateDimension = cfData.dimension(function (d) {
-                    var dateParts = d.occur_date.split('/');
+                    var dateParts = d.Date.split('/');
                     var dateObj = new Date(Number(dateParts[2])+2000,Number(dateParts[0])-1,Number(dateParts[1]));
                     return dateObj;
                 });
 
                 window.monthDimension = cfData.dimension(function (d) {
-                    var dateParts = d.occur_date.split('/');
+                    var dateParts = d.Date.split('/');
                     var dateObj = new Date(Number(dateParts[2])+2000,Number(dateParts[0])-1,Number(dateParts[1]));
                     return dateObj;
                 });
@@ -131,7 +131,7 @@ function renderMap(data, map, container) {
                         .margins({top: 10, right: 50, bottom: 30, left: 50})
                         .dimension(monthDimension)
                         .group(openGroup)
-                        .x(d3.time.scale().domain([new Date("2008-01-01T00:00:00Z"), new Date("2016-09-30T00:00:00Z")]))
+                        .x(d3.time.scale().domain([new Date("2009-01-01T00:00:00Z"), new Date("2015-09-15T00:00:00Z")]))
                         .round(d3.time.days.round)
                         .xUnits(d3.time.days)
                         .elasticY(true)
