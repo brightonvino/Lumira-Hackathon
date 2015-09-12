@@ -102,8 +102,9 @@ function renderMap(data, map, container) {
                 });
 
                 var openGroup = monthDimension.group().reduceSum(function (d) {
-                    return parseInt(d.Rating);
+                    return 1;
                 });
+                
                 closeGroup = monthDimension.group().reduce(
                         function (p, v) {
                             p.push(v.close);
