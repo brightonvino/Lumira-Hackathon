@@ -134,7 +134,7 @@ function renderMap(originalData, map, container) {
 
 $(function () {
     var container = d3.select('#container');
-    d3.json("./data/homepark.json", function (data) {
+    d3.json("./data/MidTown.json", function (data) {
         render(data, container);
     });
 });
