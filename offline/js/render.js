@@ -1,4 +1,5 @@
 var render = function (data, container) {
+	container.classed('theateam', true);
     var div = container.selectAll('#map');
     if (div[0].length === 0) {
         div = container.append('div').attr('id', 'map');
