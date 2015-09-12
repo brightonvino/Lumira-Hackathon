@@ -9,8 +9,8 @@ body {
 html, body, #container, #map {
     height: 100%;
     width: 100%;
+    font-family: sans-serif;
 }
-
 
 .theateam circle.crime {
     opacity: 0.25;
@@ -29,7 +29,6 @@ div.theateam-tip {
     border: 2px solid #000;
     font-size: 0.8em;
     line-height: 1.2em;
-    font-family: sans-serif;
 }
 
 div.theateam-tip span {
@@ -71,7 +70,7 @@ body, #map {
 .theateam-side-filter {
     display: inline-block;
     width: 20%;
-    height: 70%;
+    height: 40%;
     top: 20%;
     background-color: #666;
     border: 3px solid #000;
