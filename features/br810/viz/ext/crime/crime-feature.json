@@ -1,0 +1,19 @@
+{
+	"metadataVersion": "1.0",
+	"id": "br810.viz.ext.crime",
+	"name": "Br810Crim",
+	"description": " ",
+	"version": "1.0.0",
+	"vendor": {
+		"name": "Team A",
+		"url": "Your company website"
+	},
+	"requires": [{
+		"id": "sap.viz.common.core",
+		"version": "5.7.3"
+	}],
+	"bundles": [{
+		"id": "br810.viz.ext.crime",
+		"version": "1.0.0"
+	}]
+}
