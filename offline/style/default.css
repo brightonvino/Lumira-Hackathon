@@ -58,3 +58,82 @@ div.theateam-tip span.location {
     background: #fafafa;
     opacity: 0.7;
 }
+
+/* IMPORTANT:  use unique CSS class name to avoid confliction with other extensions or applications. */
+
+/* For example, adding the extension id as prefix of CSS class name. */
+
+body, #map {
+    height: 100%;
+    width: 100%;
+}
+
+.theateam-side-filter {
+    display: inline-block;
+    width: 20%;
+    height: 70%;
+    top: 20%;
+    background-color: #666;
+    border: 3px solid #000;
+    border-right-style: none;
+    opacity: 0.8;
+    position: fixed;
+    right: 0px;
+    z-index: 2;
+    font-size: 15px;
+    color: #ccc;
+}
+
+.theateam-side-filter-header {
+    margin: 8px 12px;
+    padding: 10px 0px;
+    width: 80%;
+    font-weight: bold;
+    color: #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.theateam-side-filter input {
+    margin: 8px 12px;
+}
+
+#theateam-colorcode-active {
+    float: right;
+    z-index: 3;
+    position: relative;
+    top: 12px;
+    right: 12px;
+}
+
+#theateam-timeslider-range, #theateam-dayslider-range {
+    margin: 8px 12px;
+    width: 70%;
+}
+
+.theateam-side-filter span {
+    top: 20%;
+    left: 5%;
+    position: relative;
+}
+
+.theateam-side-filter-handle {
+    display: inline-block;
+    width: 40px;
+    height: 60px;
+    background-color: #000;
+    position: fixed;
+    z-index: 2;
+    text-align: center;
+    cursor: pointer;
+}
+
+.theateam-filter-input-disabled {
+    opacity: 0.3;
+}
+
+i.fa.theateam-filter-icon {
+    color: #f5f5f5;
+    position: relative;
+    top: 20px;
+    font-size: 18px;
+}

@@ -1,4 +1,134 @@
+
+
+
 var render = function (data, container) {
+        var weekMap = {
+        1: "Monday",
+        2: "Tuesday",
+        3: "Wednesday",
+        4: "Thursday",
+        5: "Friday",
+        6: "Saturday",
+        7: "Sunday"
+    };
+
+
+    var setupSideFilterPanel = function() {
+
+                var $container = $(container[0]);
+                
+                console.log($container);
+                
+                
+                var rootWidth = $container.parent().parent().width();
+                var rootHeight = $container.parent().parent().height();
+                $container.parent().width(rootWidth);
+                $container.parent().height(rootHeight);
+                $container.parent().css('top', '0px');
+                $container.parent().css('left', '0px');
+                
+                $container.width(rootWidth);
+                $container.height(rootHeight);
+                $container.css('top', '0px');
+                $container.css('left', '0px');
+                
+                
+                // add side filter panel
+                $container.append(
+                    "<span class='theateam-side-filter'>\
+                        <input type='checkbox' id='theateam-colorcode-active'/>\
+                        <span>\
+                        <div class='theateam-side-filter-header'>Crime Types</div>\
+                        <input type='checkbox' id='theateam-aggassualt-filter'/> Agg Assault<br>\
+                        <input type='checkbox' id='theateam-gta-filter'/> Grand Theft Auto<br>\
+                        <input type='checkbox' id='theateam-burglary-filter'/> Burglary<br>\
+                        <input type='checkbox' id='theateam-homicide-filter'/> Homicide<br>\
+                        <input type='checkbox' id='theateam-larceny-filter'/> Larceny<br>\
+                        <input type='checkbox' id='theateam-rape-filter'/> Rape<br>\
+                        <input type='checkbox' id='theateam-robbery-filter'/> Robbery<br><br>\
+                        <input type='checkbox' id='theateam-day-filter-active' checked/>Day: <label class='theateam-day-label'>Monday</label><br>\
+                        <div id='theateam-dayslider-range'></div>\
+                        <input type='checkbox' id='theateam-time-filter-active' checked/>Hour: <label class='theateam-time-label'>0 - 24</label><br>\
+                        <div id='theateam-timeslider-range'></div><br>\
+                        </span>\
+                    </span>"
+                );
+                
+                $( "#theateam-dayslider-range" ).slider({
+                    range: false,
+                    min: 1,
+                    max: 7,
+                    value: 1,
+                    slide: function( event, ui ) {
+                      $(".theateam-day-label").text(weekMap[ui.value]);
+                    }
+                });
+                
+                $( "#theateam-timeslider-range" ).slider({
+                    range: true,
+                    min: 0,
+                    max: 24,
+                    values: [ 0, 24 ],
+                    slide: function( event, ui ) {
+                      $(".theateam-time-label").text(ui.values[ 0 ] + " - " + ui.values[ 1 ]);
+                    }
+                });
+                
+                $("#theateam-day-filter-active").change(function() {
+                    if ($(this).is(':checked')) {
+                        $( "#theateam-dayslider-range" ).slider( "enable" );
+                    } else {
+                        $( "#theateam-dayslider-range" ).slider( "disable" );
+                    }
+                    $("#theateam-dayslider-range").toggleClass('theateam-filter-input-disabled');
+                });
+                
+                $("#theateam-time-filter-active").change(function() {
+                    if ($(this).is(':checked')) {
+                        $( "#theateam-timeslider-range" ).slider( "enable" );
+                    } else {
+                        $( "#theateam-timeslider-range" ).slider( "disable" );
+                    }
+                    $("#theateam-timeslider-range").toggleClass('theateam-filter-input-disabled');
+                });
+                
+                $("#theateam-day-filter").change(function() {
+                    $(".theateam-day-label").text(weekMap[this.value]);
+                });
+                
+                $container.append("<span class='theateam-side-filter-handle' data-expanded=true><i class='fa fa-filter theateam-filter-icon'></i></span>");
+                
+                var filterPos = $(".theateam-side-filter").position();
+                var filterWidth = $(".theateam-side-filter").width();
+                $(".theateam-side-filter-handle").css('top', filterPos.top);
+                $(".theateam-side-filter-handle").css('right', $(".theateam-side-filter").width());
+                
+                $(".theateam-side-filter-handle").on('click', function() {
+                    if($(".theateam-side-filter-handle").data('expanded')) {
+                        $(".theateam-side-filter").animate({
+                            width: '0%'
+                        });
+                        $(".theateam-side-filter-handle").animate({
+                            right: '0px'
+                        });
+                        $(".theateam-side-filter-handle").data('expanded', false);
+                    } else {
+                        $(".theateam-side-filter").animate({
+                            width: '20%'
+                        });
+                        $(".theateam-side-filter-handle").animate({
+                            right: filterWidth
+                        });
+                        $(".theateam-side-filter-handle").data('expanded', true);
+                    }
+                    
+                });
+                
+                
+    }
+
+    setupSideFilterPanel();
+        
     container.classed('theateam', true);
     var mapDiv = container.selectAll('#map');
     if (mapDiv[0].length === 0) {
