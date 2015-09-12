@@ -44,6 +44,11 @@ function renderMap(originalData, map, container) {
                     });
 
             console.log("Filtered: " + data.length);
+            
+            var colorScale = d3.scale.ordinal()
+            .domain(["Auto Theft", "Robbery", "Agg Assault", "Burglary", "Larceny", "Homicide", "Rape"])
+            .range(["#2ca02c", "#1f77b4", "#9467bd", "#bcbd22", "#bd9e39", "#ff7f0e", "#d62728"]);
+    
 
             tip = d3.tip()
                     .offset([-10, 0])
@@ -63,7 +68,13 @@ function renderMap(originalData, map, container) {
                     .attr('cy', function (d) {
                         return projection.latLngToLayerPoint([parseFloat(d.Long), parseFloat(d.Lat)]).y;
                     })
-                    .attr("fill", "#d62728")
+                    .attr("fill", function(d){
+                        if(false){
+                            return colorScale(d.CrimeType);
+                        } else {
+                            return "#d62728";
+                        }
+                    })
                     .on('mouseover', tip.show)
                     .on('mouseout', tip.hide);
 
@@ -132,9 +143,13 @@ function renderMap(originalData, map, container) {
     d3Overlay.addTo(map);
 }
 
+function getCrimeColor(crimeType) {
+    
+}
+
 $(function () {
     var container = d3.select('#container');
-    d3.json("./data/MidTown.json", function (data) {
+    d3.json("./data/HomePark.json", function (data) {
         render(data, container);
     });
 });
