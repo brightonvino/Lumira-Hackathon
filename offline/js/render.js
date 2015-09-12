@@ -34,6 +34,7 @@ function renderMap(data, map, container) {
         updateMap = function () {
 
             var data = monthDimension.top(Infinity);
+            console.table(data);
             //if (data.length === migrantData.length) return;
 
             data = data.filter(function (d) {
@@ -94,36 +95,40 @@ function renderMap(data, map, container) {
                 }
 
                 var dateDimension = cfData.dimension(function (d) {
-                    return new Date(d.Date);
+                    var dateParts = d.occur_date.split('/');
+                    var dateObj = new Date(Number(dateParts[2])+2000,Number(dateParts[0])-1,Number(dateParts[1]));
+                    return dateObj;
                 });
 
                 window.monthDimension = cfData.dimension(function (d) {
-                    return new Date(d.Date);
+                    var dateParts = d.occur_date.split('/');
+                    var dateObj = new Date(Number(dateParts[2])+2000,Number(dateParts[0])-1,Number(dateParts[1]));
+                    return dateObj;
                 });
 
                 var openGroup = monthDimension.group().reduceSum(function (d) {
                     return 1;
                 });
-                
-                closeGroup = monthDimension.group().reduce(
-                        function (p, v) {
-                            p.push(v.close);
-                            return p;
-                        },
-                        function (p, v) {
-                            p.splice(p.indexOf(v.close), 1);
-                            return p;
-                        },
-                        function () {
-                            return [];
-                        }
-                );
+
+                // closeGroup = monthDimension.group().reduce(
+                //         function (p, v) {
+                //             p.push(v.close);
+                //             return p;
+                //         },
+                //         function (p, v) {
+                //             p.splice(p.indexOf(v.close), 1);
+                //             return p;
+                //         },
+                //         function () {
+                //             return [];
+                //         }
+                // );
 
                 var timeChart = dc.barChart('#time-chart');
                 timeChart
                         .width(800)
                         .height(120)
-                        //.margins({top: 10, right: 50, bottom: 30, left: 50})
+                        .margins({top: 10, right: 50, bottom: 30, left: 50})
                         .dimension(monthDimension)
                         .group(openGroup)
                         .x(d3.time.scale().domain([new Date("2008-01-01T00:00:00Z"), new Date("2016-09-30T00:00:00Z")]))
