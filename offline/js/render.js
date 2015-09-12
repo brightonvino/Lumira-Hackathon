@@ -42,19 +42,19 @@ function renderMap(data, map, container) {
 
             var feature = selection.selectAll("circle")
                     .data(data);
-            
+
             tip = d3.tip()
                     .offset([-10, 0])
                     .attr('class', 'd3-tip').html(function (d) {
-                return '<div class="tip">'+ d["UC2 Literal"] + '<BR><span>Crime Level: ' + d.MinOfucr + '</span></div>';
+                return '<div class="tip">' + d["UC2 Literal"] + '<BR><span>Crime Level: ' + d.MinOfucr + '</span></div>';
             });
-            
+
             selection.call(tip)
 
             feature.enter().append("circle")
                     .attr("class", "crime")
                     .attr("r", function (d) {
-                        return (d.MinOfucr - 300) / 25 * Math.min(projection.layer._scale, 18);
+                        return Math.log(d.MinOfucr) / 2 * Math.min(projection.layer._scale, 18);
                     })
                     .attr('cx', function (d) {
                         return projection.latLngToLayerPoint([parseFloat(d.y), parseFloat(d.x)]).x;
