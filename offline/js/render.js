@@ -61,7 +61,7 @@ function renderMap(data, map) {
 
 $(function () {
     var container = d3.select('#container');
-    d3.json("./data/crime-1k.json", function (data) {
+    d3.json("./data/homepark.json", function (data) {
         render(data, container);
     });
 });
