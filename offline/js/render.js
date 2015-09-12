@@ -54,7 +54,7 @@ function renderMap(data, map, container) {
             feature.enter().append("circle")
                     .attr("class", "crime")
                     .attr("r", function (d) {
-                        return Math.log(d.MinOfucr) / 2 * Math.min(projection.layer._scale, 18);
+                        return Math.log(d.MinOfucr) * 2 * 0.5 / Math.min(projection.layer._scale, 15);
                     })
                     .attr('cx', function (d) {
                         return projection.latLngToLayerPoint([parseFloat(d.y), parseFloat(d.x)]).x;
@@ -67,6 +67,11 @@ function renderMap(data, map, container) {
                     .on('mouseout', tip.hide);
 
             feature.exit().remove();
+
+            feature
+                .attr("r", function(d) {
+                    return Math.log(d.MinOfucr) * 2 * 0.5 / Math.min(projection.layer._scale, 15);
+                });
 
         };
 
